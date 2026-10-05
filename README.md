@@ -37,9 +37,14 @@ dnf --repofrompath=xcpng-rv,file://$PWD/rpms --setopt=xcpng-rv.gpgcheck=0 \
     --enablerepo=xcpng-rv install xapi-core xapi-xe xenopsd-xc xen-tools
 ```
 
-A whole dom0 image is built from them by `docker/riscv/kitten-dom0/rpm/build-rootfs-rpm.sh`
-in [baptleduc/hypervisor-dev](https://github.com/baptleduc/hypervisor-dev) (with the
-riscv64 Kitten dom0 patches applied): put the RPMs in its `/in/rpms`.
+These RPMs are one input to the dom0 image of our QEMU test environment, not all of it. The
+image builder, `build-rootfs-rpm.sh`, also needs a payload of RISC-V-specific files (hotplug
+scripts, a storage driver, the guest kernel) built from the Xen and xen-api trees, and it
+lives in a patch series to [baptleduc/hypervisor-dev](https://github.com/baptleduc/hypervisor-dev)
+that is not public yet. So this repository alone does not give you a dom0.
+
+Round 10 has not been built into a dom0 image yet. An earlier set (Xen `9ede04b70e`,
+vncterm 10.2.2-2) has, and runs in QEMU.
 
 ## How they were built
 
