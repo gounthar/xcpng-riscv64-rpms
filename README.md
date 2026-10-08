@@ -38,7 +38,7 @@ dnf --repofrompath=xcpng-rv,file://$PWD/rpms --setopt=xcpng-rv.gpgcheck=0 \
     --enablerepo=xcpng-rv install xapi-core xapi-xe xenopsd-xc xen-tools
 ```
 
-Add `qemu` to that list for the graphical console. Round 14 installs over round 13 with `dnf upgrade`.
+Add `qemu` to that list for the graphical console. To upgrade a round 13 system, run the same command with `upgrade` in place of `install`.
 
 These RPMs are one input to the dom0 image of our QEMU test environment, not all of it. The
 image builder, `build-rootfs-rpm.sh` in
