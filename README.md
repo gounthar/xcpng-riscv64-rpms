@@ -16,7 +16,7 @@ Each release is one tarball, named after the build round, holding:
 - `MANIFEST.tsv`: name, version-release, arch and licence of each binary RPM
 - `SHA256SUMS`: checksums of every RPM
 
-Round 13 has 39 binary RPMs: Xen 4.18 for RISC-V (hypervisor, tools, dom0 libraries, OCaml
+Round 14 has 39 binary RPMs: Xen 4.18 for RISC-V (hypervisor, tools, dom0 libraries, OCaml
 bindings), the xapi toolstack (xapi, xe, xenopsd, xcp-networkd, xcp-rrdd and the rest), `qemu`
 (only as the Xen PV backend behind a VM's graphical console in XO), and `busybox`, `vncterm`,
 `xcp-featured`, `xcp-python-libs`, `xxhash`, `yajl` and `libempserver`, which Kitten has no
@@ -25,10 +25,10 @@ riscv64 build of. Each release's notes say what changed since the previous round
 ## Using them
 
 ```bash
-gh release download round-13 -R gounthar/xcpng-riscv64-rpms
-sha256sum -c xcpng-riscv64-rpms-round-13.tar.sha256
-tar -xf xcpng-riscv64-rpms-round-13.tar
-cd xcpng-riscv64-rpms-round-13 && sha256sum -c SHA256SUMS
+gh release download round-14 -R gounthar/xcpng-riscv64-rpms
+sha256sum -c xcpng-riscv64-rpms-round-14.tar.sha256
+tar -xf xcpng-riscv64-rpms-round-14.tar
+cd xcpng-riscv64-rpms-round-14 && sha256sum -c SHA256SUMS
 ```
 
 As a local dnf repository, on a riscv64 Kitten system or in a Kitten root:
@@ -38,7 +38,7 @@ dnf --repofrompath=xcpng-rv,file://$PWD/rpms --setopt=xcpng-rv.gpgcheck=0 \
     --enablerepo=xcpng-rv install xapi-core xapi-xe xenopsd-xc xen-tools
 ```
 
-Add `qemu` to that list for the graphical console. Round 13 installs over round 12 with `dnf upgrade`.
+Add `qemu` to that list for the graphical console. To upgrade a round 13 system, run the same command with `upgrade` in place of `install`.
 
 These RPMs are one input to the dom0 image of our QEMU test environment, not all of it. The
 image builder, `build-rootfs-rpm.sh` in
@@ -48,7 +48,7 @@ driver, the guest kernel) built from the Xen and xen-api trees. So this reposito
 not give you a dom0.
 
 Our test dom0 runs round 13's xapi packages and `qemu`, installed with dnf, on Xen packages from
-an earlier build (`9ede04b70e`).
+an earlier build (`9ede04b70e`). A dom0 image built only from round 14's RPMs has also run a guest (see the round 14 notes).
 
 ## How they were built
 
@@ -60,7 +60,7 @@ qemu-user on an x86_64 host. There is no cross-compilation: every compiler ran e
 | Package | Source |
 |---|---|
 | `xen-*` | [Baptiste Le Duc's Xen tree](https://gitlab.com/xen-project/people/baptleduc/xen), branch `xapi/investigation`, plus RISC-V fixes, at `0ef4cdf884` |
-| `xapi-*`, `xenopsd*`, `xcp-*` | [baptleduc/xen-api](https://github.com/baptleduc/xen-api), branch `riscv`, plus RISC-V fixes; round 13 at `245b33a319` ([gounthar/xen-api `riscv64-rpms-round-13`](https://github.com/gounthar/xen-api/tree/riscv64-rpms-round-13)) |
+| `xapi-*`, `xenopsd*`, `xcp-*` | [baptleduc/xen-api](https://github.com/baptleduc/xen-api), branch `riscv`, plus RISC-V fixes; rounds 13 and 14 at `245b33a319` ([gounthar/xen-api `riscv64-rpms-round-13`](https://github.com/gounthar/xen-api/tree/riscv64-rpms-round-13)) |
 | `qemu` | XCP-ng's QEMU 10.1.0 ([xcp-ng-rpms/qemu](https://github.com/xcp-ng-rpms/qemu), branch `jvr/9-arm`), with two patches for a riscv64 host |
 | `yajl`, `xxhash`, `busybox` | the AlmaLinux Kitten and EPEL 10 source RPMs, rebuilt unchanged or nearly |
 | `vncterm`, `xcp-featured`, `xcp-python-libs`, `xcp-ng-release`, `libempserver` | [xcp-ng-rpms](https://github.com/xcp-ng-rpms) and XCP-ng's own repositories, with riscv64 fixes |
