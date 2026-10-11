@@ -39,7 +39,7 @@ dnf --repofrompath=xcpng-rv,file://$PWD/rpms --setopt=xcpng-rv.gpgcheck=0 \
     --enablerepo=xcpng-rv install xapi-core xapi-xe xenopsd-xc xen-tools
 ```
 
-Add `qemu` to that list for the graphical console, and `kernel-xcpng-riscv64` for the dom0 kernel (it installs into `/boot` but adds no boot entry). With `upgrade` in place of `install`, the same command took a round 14 system to round 16; the upgrade to round 17 has not been run.
+Add `qemu` to that list for the graphical console, and `kernel-xcpng-riscv64` for the dom0 kernel (it installs into `/boot` but adds no boot entry). Run against the round 16 repository with `upgrade` in place of `install`, the same command took a round 14 system to round 16. No `dnf upgrade` to round 17 has been run: the round 17 Xen packages and the kernel were only applied with `rpm -Uvh` to a copy of the lab's dom0 image.
 
 These RPMs are one input to the dom0 image of our QEMU test environment, not all of it. The
 image builder, `build-rootfs-rpm.sh` in
