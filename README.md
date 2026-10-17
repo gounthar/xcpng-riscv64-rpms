@@ -16,7 +16,7 @@ Each release is one tarball, named after the build round, holding:
 - `MANIFEST.tsv`: name, version-release, arch and licence of each binary RPM
 - `SHA256SUMS`: checksums of every RPM
 
-Round 18 has 42 binary RPMs: Xen 4.18 for RISC-V (hypervisor, tools, dom0 libraries, OCaml
+Round 19 has 42 binary RPMs: Xen 4.18 for RISC-V (hypervisor, tools, dom0 libraries, OCaml
 bindings), a dom0 kernel (`kernel-xcpng-riscv64`, Linux 6.18 with Xen support, which Kitten's
 own kernel lacks), the xapi toolstack (xapi, xe, xenopsd, xcp-networkd, xcp-rrdd and the rest), `qemu`
 (only as the Xen PV backend behind a VM's graphical console in XO), and `busybox`, `vncterm`,
@@ -26,10 +26,10 @@ own kernel lacks), the xapi toolstack (xapi, xe, xenopsd, xcp-networkd, xcp-rrdd
 ## Using them
 
 ```bash
-gh release download round-18 -R gounthar/xcpng-riscv64-rpms
-sha256sum -c xcpng-riscv64-rpms-round-18.tar.sha256
-tar -xf xcpng-riscv64-rpms-round-18.tar
-cd xcpng-riscv64-rpms-round-18 && sha256sum -c SHA256SUMS
+gh release download round-19 -R gounthar/xcpng-riscv64-rpms
+sha256sum -c xcpng-riscv64-rpms-round-19.tar.sha256
+tar -xf xcpng-riscv64-rpms-round-19.tar
+cd xcpng-riscv64-rpms-round-19 && sha256sum -c SHA256SUMS
 ```
 
 As a local dnf repository, on a riscv64 Kitten system or in a Kitten root:
@@ -52,7 +52,7 @@ Our test dom0 runs round 13's xapi packages and `qemu`, installed with dnf, on X
 an earlier build (`9ede04b70e`). A dom0 image built only from round 14's RPMs has also run a guest (see the round 14 notes).
 Round 17's Xen and kernel packages, installed into a copy of the test dom0, booted it and ran a
 guest, with QEMU loading Xen and the kernel from copies of `/boot` (see the round 17 notes).
-Round 18's Xen uImage booted a GPT copy of the test dom0 from stock U-Boot under QEMU (see the round 18 notes).
+Round 18's Xen uImage booted a GPT copy of the test dom0 from stock U-Boot under QEMU (see the round 18 notes). Round 19's Xen booted the same kind of image without the boot script deleting the PCI host bridge (see the round 19 notes).
 
 ## How they were built
 
@@ -63,9 +63,9 @@ qemu-user on an x86_64 host. There is no cross-compilation: every compiler ran e
 
 | Package | Source |
 |---|---|
-| `xen-*` | [Baptiste Le Duc's Xen tree](https://gitlab.com/xen-project/people/baptleduc/xen), branch `xapi/investigation`, plus RISC-V fixes; rounds 17 and 18 at `d10435186e` ([gounthar/xen `riscv/7-sstc-wake`](https://gitlab.com/gounthar/xen/-/tree/riscv/7-sstc-wake), merge requests !4 to !7) |
+| `xen-*` | [Baptiste Le Duc's Xen tree](https://gitlab.com/xen-project/people/baptleduc/xen), branch `xapi/investigation`, plus RISC-V fixes; rounds 17 and 18 at `d10435186e` ([gounthar/xen `riscv/7-sstc-wake`](https://gitlab.com/gounthar/xen/-/tree/riscv/7-sstc-wake), merge requests !4 to !7); round 19 at `8fcce53948` ([gounthar/xen `riscv/8-dom0-skip-pci`](https://gitlab.com/gounthar/xen/-/tree/riscv/8-dom0-skip-pci), `d10435186e` plus the dom0 PCI skip) |
 | `kernel-xcpng-riscv64` | [gounthar/linux-xen-riscv](https://github.com/gounthar/linux-xen-riscv), branch `dom0/all-fixes-20261007`, at `e42e2d799` |
-| `xapi-*`, `xenopsd*`, `xcp-*` | [baptleduc/xen-api](https://github.com/baptleduc/xen-api), branch `riscv`, plus RISC-V fixes; rounds 13 to 18 at `245b33a319` ([gounthar/xen-api `riscv64-rpms-round-13`](https://github.com/gounthar/xen-api/tree/riscv64-rpms-round-13)) |
+| `xapi-*`, `xenopsd*`, `xcp-*` | [baptleduc/xen-api](https://github.com/baptleduc/xen-api), branch `riscv`, plus RISC-V fixes; rounds 13 to 19 at `245b33a319` ([gounthar/xen-api `riscv64-rpms-round-13`](https://github.com/gounthar/xen-api/tree/riscv64-rpms-round-13)) |
 | `qemu` | XCP-ng's QEMU 10.1.0 ([xcp-ng-rpms/qemu](https://github.com/xcp-ng-rpms/qemu), branch `jvr/9-arm`), with two patches for a riscv64 host |
 | `yajl`, `xxhash`, `busybox`, `dhcp-*` | the AlmaLinux Kitten and EPEL 10 source RPMs, rebuilt unchanged or nearly |
 | `vncterm`, `xcp-featured`, `xcp-python-libs`, `xcp-ng-release`, `libempserver` | [xcp-ng-rpms](https://github.com/xcp-ng-rpms) and XCP-ng's own repositories, with riscv64 fixes |
